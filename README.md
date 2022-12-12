@@ -1,2 +1,6 @@
 # flutter-todo-app
-school project
+## school project:
+Make a simple todo app with flutter
+
+
+Made by freni20
