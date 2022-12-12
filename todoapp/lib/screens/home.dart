@@ -12,13 +12,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final todoList = Task.todoList();
-  List<Task> tasks = [];
-  final _todoController = TextEditingController();
+  final taskList = Task.todoList();
+  List<Task> todos = [];
+  final _taskController = TextEditingController();
 
   @override
   void initState() {
-    tasks = todoList;
+    todos = taskList;
     super.initState();
   }
 
@@ -52,11 +52,11 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
-                      for (Task task in tasks.reversed)
-                        ToDoItem(
-                          todo: task,
-                          onToDoChanged: _handleChangeTask,
-                          onDeleteItem: removeTask,
+                      for (Task task in todos.reversed)
+                        TaskItem(
+                          task: task,
+                          onTaskChanged: _handleChangeTask,
+                          onDeleteTask: removeTask,
                         ),
                     ],
                   ),
@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: TextField(
-                    controller: _todoController,
+                    controller: _taskController,
                     decoration: const InputDecoration(
                         hintText: 'Add a new task',
                         border: InputBorder.none),
@@ -105,7 +105,7 @@ class _HomeState extends State<Home> {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
-                    addTask(_todoController.text);
+                    addTask(_taskController.text);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: tdGreen,
@@ -135,26 +135,26 @@ class _HomeState extends State<Home> {
 
   void removeTask(String id) {
     setState(() {
-      todoList.removeWhere((item) => item.id == id);
+      taskList.removeWhere((item) => item.id == id);
     });
   }
 
   void addTask(String task) {
     setState(() {
-      todoList.add(Task(
+      taskList.add(Task(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         task: task,
       ));
     });
-    _todoController.clear();
+    _taskController.clear();
   }
 
   void _runFilter(String enteredKeyword) {
     List<Task> results = [];
     if (enteredKeyword.isEmpty) {
-      results = todoList;
+      results = taskList;
     } else {
-      results = todoList
+      results = taskList
           .where((item) => item.task!
               .toLowerCase()
               .contains(enteredKeyword.toLowerCase()))
@@ -162,7 +162,7 @@ class _HomeState extends State<Home> {
     }
 
     setState(() {
-      tasks = results;
+      todos = results;
     });
   }
 
